@@ -1,0 +1,29 @@
+name: Quality Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run linter
+        run: ruff check .
+
+      - name: Run tests
+        run: pytest test_app.py -v
+
+  # TODO: Replace the `quality` job above with separate `lint` and `test` jobs
+  # both running on ubuntu-latest and keeping the same steps.
